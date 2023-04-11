@@ -60,7 +60,7 @@ function criaElemento(item){
     divAcoes.classList.add('acoes');
 
     const btnEditar = criaBtnEditar();
-    const btnExcluir = criaBtnExcluir();
+    const btnExcluir = criaBtnExcluir(item['id']);
 
     divAcoes.appendChild(btnEditar);
     divAcoes.appendChild(btnExcluir);
@@ -93,33 +93,27 @@ function criaBtnEditar(){
     return btnEditar;
 }
 
-function criaBtnExcluir(){
+function criaBtnExcluir(id){
     var btnExcluir = document.createElement('button');
     btnExcluir.classList.add('btn');
     btnExcluir.classList.add('excluir');
     btnExcluir.innerHTML += "excluir";
 
     btnExcluir.addEventListener("click", function(){
-        deletaElemento(this.parentNode.parentNode);
+        deletaElemento(this.parentNode.parentNode, id);
     });
 
     return btnExcluir;
 }
 
-function deletaElemento(elemento){
-    const elementoStrong = elemento.querySelector('[data-id]');
-    
+function deletaElemento(elemento, id){
+    // const elementoStrong = elemento.querySelector('[data-id]');
+    console.log(id);
+
     items.forEach(item => {
-        if(item['id'] == elementoStrong.dataset.id){
-            console.log(item['id']);
-            console.log(elementoStrong.dataset.id);
+        if(item['id'] == id){
             elemento.remove();
-            if(item['id'] == 0){
-                items.splice(parseInt(item['id']), 1);
-            }
-
-            items.splice(parseInt(item['id']) - 1, 1);
-
+            items.splice(parseInt(id) - 1, 1);
             localStorage.setItem('items', JSON.stringify(items));
         };
     });
