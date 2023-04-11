@@ -2,10 +2,24 @@ const form = document.getElementById("novoItem");
 const lista = document.getElementById('lista');
 const items = JSON.parse(localStorage.getItem("items")) || []; 
 
+if(items.length > 0){
+    atualizaElementos();
+};
+
 items.forEach(element => {
     criaElemento(element);
 });
 
+
+function atualizaElementos(){
+    cont = 0;
+    items.forEach(e => {
+        e.id = cont;
+        cont += 1;
+    })
+
+    localStorage.setItem('items', JSON.stringify(items));
+}
 
 
 // Aqui quanto eu clico em submit
@@ -60,7 +74,7 @@ function criaElemento(item){
     divAcoes.classList.add('acoes');
 
     const btnEditar = criaBtnEditar();
-    const btnExcluir = criaBtnExcluir(item['id']);
+    const btnExcluir = criaBtnExcluir(item.id);
 
     divAcoes.appendChild(btnEditar);
     divAcoes.appendChild(btnExcluir);
@@ -108,12 +122,11 @@ function criaBtnExcluir(id){
 
 function deletaElemento(elemento, id){
     // const elementoStrong = elemento.querySelector('[data-id]');
-    console.log(id);
 
     items.forEach(item => {
-        if(item['id'] == id){
+        if(item['id'] === id){
             elemento.remove();
-            items.splice(parseInt(id) - 1, 1);
+            items.splice(items.findIndex(e => e.id === id), 1);
             localStorage.setItem('items', JSON.stringify(items));
         };
     });
